@@ -335,7 +335,7 @@ body {
   line-height: 1.1;
 }
 
-.card-name-wrap { text-align: center; margin: auto 0; width: 253px; }
+.card-name-wrap { text-align: center; margin: auto 0; width: 253px; overflow: visible; }
 
 .card-firstname, .card-lastname {
   display: block;
@@ -343,7 +343,8 @@ body {
   color: #fff;
   letter-spacing: 0.02em;
   white-space: nowrap;
-  overflow: hidden;
+  overflow: visible;
+  padding-bottom: 0.15em;
 }
 
 .card-affiliation {
@@ -1077,7 +1078,7 @@ function switchMode(mode){
 }
 
 // ── 직접 입력 테이블 ──
-let directData = [{ first:'', last:'', affil:'' }];
+let directData = [{ first:'Heung Min', last:'Son', affil:'LAFC' }];
 
 function renderDirectTable(){
   const tbody = document.getElementById('direct-tbody');
@@ -1227,8 +1228,8 @@ let cardWpx = 298;
 let cardHpx = 420;
 let MAX_NAME_W = 253; // 카드 가로의 85%
 const FONT_STYLES = {
-  bebas:      { fontFamily:"'Bebas Neue',sans-serif",  fontWeight:'400', baseSize:58, letterSpacing:'0.02em', lineHeight:'0.88' },
-  pretendard: { fontFamily:"'Pretendard',sans-serif",  fontWeight:'800', baseSize:52, letterSpacing:'-0.01em', lineHeight:'1.2' },
+  bebas:      { fontFamily:"'Bebas Neue',sans-serif",  fontWeight:'400', baseSize:58, letterSpacing:'0.02em', lineHeight:'0.80' },
+  pretendard: { fontFamily:"'Pretendard',sans-serif",  fontWeight:'800', baseSize:52, letterSpacing:'-0.01em', lineHeight:'0.95' },
 };
 
 
@@ -1405,6 +1406,10 @@ document.getElementById('pdf-modal').addEventListener('click', function(e){
 async function init(){
   LOGO_PROCESSED = await processLogoImage(LOGO_RAW_SRC);
   renderDirectTable();
+  // 행사명 더미 데이터
+  const evInput = document.getElementById('event-name-input');
+  if(evInput) evInput.value = 'MIDAS SQUARE 1991';
+  syncDirectToRows();
   document.getElementById('card-logo').src = LOGO_PROCESSED;
   initBgGrid();
   selectBg(0, true);
@@ -1627,8 +1632,8 @@ async function renderCardToImage(r){
 
   const nw = document.createElement('div');
   nw.style.cssText = 'text-align:center;margin:auto 0;width:253px;';
-  nw.appendChild(el('div', r.first, `font-family:${s.fontFamily};font-size:${sharedFs}px;font-weight:${s.fontWeight};line-height:${s.lineHeight};color:#fff;letter-spacing:${s.letterSpacing};white-space:nowrap;`));
-  nw.appendChild(el('div', r.last,  `font-family:${s.fontFamily};font-size:${sharedFs}px;font-weight:${s.fontWeight};line-height:${s.lineHeight};color:#fff;letter-spacing:${s.letterSpacing};white-space:nowrap;`));
+  nw.appendChild(el('div', r.first, `font-family:${s.fontFamily};font-size:${sharedFs}px;font-weight:${s.fontWeight};line-height:1.0;color:#fff;letter-spacing:${s.letterSpacing};white-space:nowrap;overflow:visible;padding-bottom:0.15em;`));
+  nw.appendChild(el('div', r.last,  `font-family:${s.fontFamily};font-size:${sharedFs}px;font-weight:${s.fontWeight};line-height:1.0;color:#fff;letter-spacing:${s.letterSpacing};white-space:nowrap;overflow:visible;padding-bottom:0.15em;`));
   nw.appendChild(el('div', r.affil, `font-size:12px;color:rgba(255,255,255,.82);letter-spacing:0.04em;margin-top:12px;font-family:'Pretendard',sans-serif;`));
   content.appendChild(nw);
 
