@@ -646,13 +646,19 @@ body {
 .modal-option:hover { border-color: var(--primary); background: var(--primary-weak); }
 .modal-option.selected { border-color: var(--primary); background: var(--primary-weak); }
 .modal-option-icon {
-  width: 36px; height: 36px;
+  width: 48px; height: 48px;
   background: var(--primary-weak);
   border-radius: var(--radius-sm);
   display: flex; align-items: center; justify-content: center;
-  font-size: 18px; flex-shrink: 0;
+  flex-shrink: 0;
+  transition: background 0.15s;
 }
-.modal-option.selected .modal-option-icon { background: var(--primary); }
+.modal-option-icon svg {
+  display: block;
+  flex-shrink: 0;
+}
+.modal-option.selected .modal-option-icon,
+.modal-option:hover .modal-option-icon { background: var(--primary); }
 .modal-option-text {}
 .modal-option-label {
   font-size: 14px; font-weight: 700; color: var(--text-primary);
@@ -819,14 +825,14 @@ body {
     <div class="modal-desc">생성할 명찰을 선택하세요</div>
     <div class="modal-options">
       <div class="modal-option selected" id="opt-current" onclick="selectModalOpt('current')">
-        <div class="modal-option-icon" id="opt-current-icon">🪪</div>
+        <div class="modal-option-icon" id="opt-current-icon"><svg width="32" height="32" viewBox="0 0 92 92" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M63 14C66.3137 14 69 16.6863 69 20V72C69 75.3137 66.3137 78 63 78H28C24.6863 78 22 75.3137 22 72V20C22 16.6863 24.6863 14 28 14H63ZM40 19C38.8954 19 38 19.8954 38 21C38 22.1046 38.8954 23 40 23H51C52.1046 23 53 22.1046 53 21C53 19.8954 52.1046 19 51 19H40Z" fill="white"/><rect x="41.5" y="8.5" width="8" height="12" rx="0.5" fill="#DBE0EB" stroke="url(#o0_linear)"/><defs><linearGradient id="o0_linear" x1="45.5" y1="8" x2="45.5" y2="21" gradientUnits="userSpaceOnUse"><stop stop-color="#BAC2D6" stop-opacity="0"/><stop offset="1" stop-color="#BAC2D6" stop-opacity="0.55"/></linearGradient></defs></svg></div>
         <div class="modal-option-text">
           <div class="modal-option-label">현재 명찰</div>
           <div class="modal-option-sub" id="opt-current-sub">선택된 1명</div>
         </div>
       </div>
       <div class="modal-option" id="opt-all" onclick="selectModalOpt('all')">
-        <div class="modal-option-icon" id="opt-all-icon">📋</div>
+        <div class="modal-option-icon" id="opt-all-icon"><svg width="32" height="32" viewBox="0 0 92 92" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M72.7041 9.59082C75.7918 9.59082 78.2958 12.0939 78.2959 15.1816V63.6367C78.2957 66.7243 75.7918 69.2275 72.7041 69.2275H40.0908C37.0032 69.2275 34.5002 66.7243 34.5 63.6367V15.1816C34.5001 12.094 37.0031 9.59087 40.0908 9.59082H72.7041ZM51.2725 14.25C50.2434 14.2501 49.4094 15.0843 49.4092 16.1133C49.4092 17.1425 50.2433 17.9774 51.2725 17.9775H61.5225C62.5517 17.9775 63.3867 17.1425 63.3867 16.1133C63.3865 15.0842 62.5516 14.25 61.5225 14.25H51.2725Z" fill="#7199F3"/><rect x="52.2046" y="4" width="8.38636" height="12.1136" rx="0.931818" fill="#6A93EF"/><path d="M62.4541 17.9772C65.5418 17.9772 68.0458 20.4803 68.0459 23.568V72.0231C68.0457 75.1107 65.5418 77.6139 62.4541 77.6139H29.8408C26.7532 77.6138 24.2502 75.1107 24.25 72.0231V23.568C24.2501 20.4803 26.7531 17.9772 29.8408 17.9772H62.4541ZM41.0225 22.6364C39.9934 22.6365 39.1594 23.4706 39.1592 24.4996C39.1592 25.5288 39.9933 26.3638 41.0225 26.3639H51.2725C52.3017 26.3639 53.1367 25.5289 53.1367 24.4996C53.1365 23.4705 52.3016 22.6364 51.2725 22.6364H41.0225Z" fill="#AAC2F8"/><rect x="41.9546" y="12.3864" width="8.38636" height="12.1136" rx="0.931818" fill="#98B3EE"/><path d="M52.2041 26.3636C55.2918 26.3636 57.7958 28.8667 57.7959 31.9544V80.4095C57.7957 83.4971 55.2918 86.0003 52.2041 86.0003H19.5908C16.5032 86.0002 14.0002 83.497 14 80.4095V31.9544C14.0001 28.8667 16.5031 26.3636 19.5908 26.3636H52.2041ZM30.7725 31.0227C29.7434 31.0229 28.9094 31.857 28.9092 32.886C28.9092 33.9152 29.7433 34.7501 30.7725 34.7503H41.0225C42.0517 34.7503 42.8867 33.9153 42.8867 32.886C42.8865 31.8569 42.0516 31.0227 41.0225 31.0227H30.7725Z" fill="white"/><rect x="32.1705" y="21.2386" width="7.45455" height="11.1818" rx="0.465909" fill="#DBE0EB" stroke="url(#m0_linear)" stroke-width="0.931818"/><defs><linearGradient id="m0_linear" x1="35.8978" y1="20.7727" x2="35.8978" y2="32.8864" gradientUnits="userSpaceOnUse"><stop stop-color="#BAC2D6" stop-opacity="0"/><stop offset="1" stop-color="#BAC2D6" stop-opacity="0.55"/></linearGradient></defs></svg></div>
         <div class="modal-option-text">
           <div class="modal-option-label">전체 명찰</div>
           <div class="modal-option-sub" id="opt-all-sub">전체 명 일괄 생성</div>
