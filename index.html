@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>명찰 생성기</title>
-  <link rel="icon" href="favicon.png" type="image/png">
 <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -131,6 +130,12 @@ body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--t1);mi
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 #M{position:fixed;left:-9999px;top:0;white-space:nowrap;visibility:hidden;pointer-events:none;}
 #ME{position:fixed;left:-9999px;top:0;max-width:130px;word-break:keep-all;white-space:normal;text-transform:uppercase;letter-spacing:-.01em;visibility:hidden;pointer-events:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.font-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: grayscale(1); /* 폰트가 잠긴 느낌을 더 주려면 추가 */
+}
 </style>
 </head>
 <body>
@@ -149,7 +154,7 @@ body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--t1);mi
 </svg></div><div class="mode-label">구글 시트 (개발중)</div></div></div><div id="panel-direct"><div class="dt-wrap"><table class="dt"><thead><tr><th class="cn">#</th><th>이름</th><th>성</th><th>소속</th><th class="cx"></th></tr></thead><tbody id="dt-body"></tbody></table></div><button class="add-row" onclick="addRow()">+ 행 추가</button></div><div id="panel-sheet" style="display:none"><div class="sh-row"><input class="sh-inp" id="sheet-url" type="text" placeholder="구글 시트 URL 붙여넣기"><button class="btn-ic" onclick="loadSheet()">&#8635;</button></div><div id="sheet-status" class="sh-st"></div><div class="list-wrap"><div class="list-hdr"><div>#</div><div>이름</div><div>성</div><div>소속</div></div><div class="list-body" id="list-body"><div class="list-empty">시트 URL을 입력하고 ↻ 버튼을 눌러주세요</div></div></div></div></div>
   <div class="sec"><div class="sec-lbl">행사명</div><div class="ev-row"><input class="ev-inp" id="ev-inp" type="text" placeholder="행사명을 입력하세요" value="MIDAS SQUARE 1991"><button class="btn-ap" onclick="applyEv()">적용</button></div></div>
   <div class="sec"><div class="sec-lbl">배경 선택</div><div class="bg-tabs"><button class="bg-tab active" id="bgt-A" onclick="switchBgType('A')">A</button><button class="bg-tab" id="bgt-B" onclick="switchBgType('B')">B</button><button class="bg-tab" id="bgt-C" onclick="switchBgType('C')">C</button><button class="bg-tab" id="bgt-D" onclick="switchBgType('D')">D</button><button class="bg-tab" id="bgt-E" onclick="switchBgType('E')">E</button><button class="bg-tab" id="bgt-F" onclick="switchBgType('F')">F</button></div><div class="bg-grid" id="bg-grid"></div></div>
-  <div class="sec"><div class="sec-lbl">폰트</div><div class="font-toggle"><button class="font-btn active" id="font-pr" onclick="switchFont('pretendard')">Pretendard</button><button class="font-btn bb" id="font-bb" onclick="switchFont('bebas')">Bebas Neue</button></div></div>
+  <div class="sec"><div class="sec-lbl">폰트</div><div class="font-toggle"><button class="font-btn active" id="font-pr" onclick="switchFont('pretendard')">Pretendard</button><button class="font-btn bb" id="font-bb" onclick="switchFont('bebas')" disabled>Bebas Neue</button></div></div>
   <div class="sec"><div class="sec-lbl">명찰 사이즈 (mm)</div><div class="sz-grid"><div class="sz-fld"><label>가로</label><div class="sz-inn"><input class="sz-inp" id="sz-w" type="number" min="10" max="500" placeholder="105"><span class="sz-unit">mm</span></div></div><div class="sz-fld"><label>세로</label><div class="sz-inn"><input class="sz-inp" id="sz-h" type="number" min="10" max="700" placeholder="148"><span class="sz-unit">mm</span></div></div></div><div class="sz-hint">미입력 시 기본값: A6 105 × 148 mm (298 × 420 px)</div><div class="sz-btns"><button class="btn-ol" style="flex:2" onclick="applySize()">사이즈 수정하기</button><button class="btn-gh" style="flex:1" onclick="resetSize()">초기화</button></div></div>
   <div class="sec"><div class="sec-lbl">내보내기</div><button class="btn-pr" id="export-btn" onclick="openModal()">PDF 생성하기</button></div>
     <div style="padding:16px 20px;border-top:1px solid var(--bd);margin-top:auto;flex-shrink:0;"><p style="font-size:11px;color:var(--t4);text-align:center;line-height:1.6;">기타문의 RPM 추진실 팀 - 조한정 프로</p></div>
@@ -344,8 +349,8 @@ const BGS={
   F:{imgs:BGF,tpl:'F'},
 };
 const FONTS={
-  pretendard:{fam:"'Pretendard',sans-serif",wt:'800',base:52,ls:'-0.01em',lh:'1.05'},
-  bebas:{fam:"'Bebas Neue',sans-serif",wt:'400',base:58,ls:'0.02em',lh:'0.88'},
+  pretendard:{fam:"'Pretendard',sans-serif",wt:'800',base:55,ls:'-0.01em',lh:'1.05'},
+  bebas:{fam:"'Bebas Neue',sans-serif",wt:'400',base:70,ls:'-0.02em',lh:'0.88'},
 };
 let rows=[],dir=[{first:'Heung Min',last:'Son',affil:'LAFC'}];
 let ci=0,mode='direct',bgT='A',bgI=0,font='pretendard',tpl='A',pmode='cur';
@@ -534,7 +539,7 @@ async function exportPDF(all=false){
 // -------------------------------------------------------------
 function buildCardHTML(evText, firstText, lastText, affilText, W, H, t, fontKey) {
     const s = FONTS[fontKey];
-    const fs = calcFs(firstText, lastText, s, Math.round(W*0.82), 42);
+    const fs = calcFs(firstText, lastText, s, Math.round(W*0.82), 70);
     const evFs = calcEvFs(evText);
     
     // Y_POS 설정을 문자열로 엮어줍니다.
