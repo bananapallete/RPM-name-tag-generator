@@ -349,8 +349,8 @@ const BGS={
   F:{imgs:BGF,tpl:'F'},
 };
 const FONTS={
-  pretendard:{fam:"'Pretendard',sans-serif",wt:'800',base:55,ls:'-0.01em',lh:'1.05'},
-  bebas:{fam:"'Bebas Neue',sans-serif",wt:'400',base:70,ls:'-0.02em',lh:'0.88'},
+  pretendard:{fam:"'Pretendard',sans-serif",wt:'800',base:42,ls:'-0.01em',lh:'1.05'},
+  bebas:{fam:"'Bebas Neue',sans-serif",wt:'400',base:50,ls:'-0.02em',lh:'0.88'},
 };
 let rows=[],dir=[{first:'Heung Min',last:'Son',affil:'LAFC'}];
 let ci=0,mode='direct',bgT='A',bgI=0,font='pretendard',tpl='A',pmode='cur';
@@ -539,7 +539,7 @@ async function exportPDF(all=false){
 // -------------------------------------------------------------
 function buildCardHTML(evText, firstText, lastText, affilText, W, H, t, fontKey) {
     const s = FONTS[fontKey];
-    const fs = calcFs(firstText, lastText, s, Math.round(W*0.82), 70);
+    const fs = calcFs(firstText, lastText, s, Math.round(W*0.82), 42);
     const evFs = calcEvFs(evText);
     
     // Y_POS 설정을 문자열로 엮어줍니다.
