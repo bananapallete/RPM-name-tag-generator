@@ -401,7 +401,7 @@ function renderDir(){
 }
 function addRow(){dir.push({first:'',last:'',affil:''});ci=dir.length-1;renderDir();syncRows();setTimeout(()=>{const trs=document.querySelectorAll('#dt-body tr');if(trs.length){const inp=trs[trs.length-1].querySelector('.ci');if(inp)inp.focus();}},30);}
 const DEFAULT_DIR=[{first:'Heung Min',last:'Son',affil:'LAFC'}];
-function resetRows(){if(!confirm('더미 데이터로 초기화할까요?'))return;dir=DEFAULT_DIR.map(r=>({...r}));ci=0;renderDir();syncRows();}
+function resetRows(){dir=DEFAULT_DIR.map(r=>({...r}));ci=0;renderDir();syncRows();toast('데이터 초기화');}
 function delRow(i){if(dir.length<=1)dir=[{first:'',last:'',affil:''}];else dir.splice(i,1);if(ci>=dir.length)ci=dir.length-1;renderDir();syncRows();}
 function selDir(i){ci=i;document.querySelectorAll('#dt-body tr').forEach((tr,j)=>tr.classList.toggle('sel',j===i));render();updNav();}
 function doPaste(txt,sr,sf){
