@@ -82,6 +82,9 @@ body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--t1);mi
 .font-btn{padding:9px;border:1.5px solid var(--bd);border-radius:var(--r8);background:var(--sf2);color:var(--t2);font-size:12px;font-weight:600;font-family:'Pretendard',sans-serif;cursor:pointer;transition:all .15s;text-align:center;}
 .font-btn:hover{border-color:var(--pr);background:var(--prw);color:var(--pr);font-weight:700;} .font-btn.active{border-color:var(--pr);background:var(--prw);color:var(--pr);font-weight:700;}
 .font-btn.bb{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.05em;}
+.name-order-btn{width:100%;padding:9px;border:1.5px solid var(--bd);border-radius:var(--r8);background:var(--sf2);color:var(--t2);font-size:12px;font-weight:600;font-family:'Pretendard',sans-serif;cursor:pointer;transition:all .15s;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;}
+.name-order-btn:hover{border-color:var(--pr);background:var(--prw);color:var(--pr);font-weight:700;}
+.name-order-btn.active{border-color:var(--pr);background:var(--prw);color:var(--pr);font-weight:700;}
 .sz-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .sz-fld{display:flex;flex-direction:column;gap:4px;}.sz-fld label{font-size:10px;font-weight:700;color:var(--t3);}
 .sz-inn{display:flex;align-items:center;border:1.5px solid var(--bd);border-radius:var(--r8);overflow:hidden;background:var(--sf);transition:border-color .15s;}
@@ -157,6 +160,7 @@ body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--t1);mi
   <div class="sec"><div class="sec-lbl">행사명</div><div class="ev-row"><input class="ev-inp" id="ev-inp" type="text" placeholder="행사명을 입력하세요" value="MIDAS SQUARE 1991"><button class="btn-ap" onclick="applyEv()">적용</button></div></div>
   <div class="sec"><div class="sec-lbl">배경 선택</div><div class="bg-tabs"><button class="bg-tab active" id="bgt-A" onclick="switchBgType('A')">A</button><button class="bg-tab" id="bgt-B" onclick="switchBgType('B')">B</button><button class="bg-tab" id="bgt-C" onclick="switchBgType('C')">C</button><button class="bg-tab" id="bgt-D" onclick="switchBgType('D')">D</button><button class="bg-tab" id="bgt-E" onclick="switchBgType('E')">E</button><button class="bg-tab" id="bgt-F" onclick="switchBgType('F')">F</button></div><div class="bg-grid" id="bg-grid"></div></div>
   <div class="sec"><div class="sec-lbl">폰트</div><div class="font-toggle"><button class="font-btn active" id="font-pr" onclick="switchFont('pretendard')">Pretendard</button><button class="font-btn bb" id="font-bb" onclick="switchFont('bebas')" disabled>Bebas Neue</button></div></div>
+  <div class="sec"><div class="sec-lbl">표기 방식</div><button class="name-order-btn" id="name-order-btn" onclick="toggleNameOrder()">이름 순서 변경</button></div>
   <div class="sec"><div class="sec-lbl">명찰 사이즈 (mm)</div><div class="sz-grid"><div class="sz-fld"><label>가로</label><div class="sz-inn"><input class="sz-inp" id="sz-w" type="number" min="10" max="500" placeholder="105"><span class="sz-unit">mm</span></div></div><div class="sz-fld"><label>세로</label><div class="sz-inn"><input class="sz-inp" id="sz-h" type="number" min="10" max="700" placeholder="148"><span class="sz-unit">mm</span></div></div></div><div class="sz-hint">미입력 시 기본값: A6 105 × 148 mm (298 × 420 px)</div><div class="sz-btns"><button class="btn-ol" style="flex:2" onclick="applySize()">사이즈 수정하기</button><button class="btn-gh" style="flex:1" onclick="resetSize()">초기화</button></div></div>
   <div class="sec"><div class="sec-lbl">내보내기</div><button class="btn-pr" id="export-btn" onclick="openModal()">PDF 생성하기</button></div>
     <div style="padding:16px 20px;border-top:1px solid var(--bd);margin-top:auto;flex-shrink:0;"><p style="font-size:11px;color:var(--t4);text-align:center;line-height:1.6;">기타문의 RPM 추진실 팀 - 조한정 프로</p></div>
@@ -355,7 +359,7 @@ const FONTS={
   bebas:{fam:"'Bebas Neue',sans-serif",wt:'400',base:50,ls:'-0.02em',lh:'0.88'},
 };
 let rows=[],dir=[{first:'Heung Min',last:'Son',affil:'LAFC'}];
-let ci=0,mode='direct',bgT='A',bgI=0,font='pretendard',tpl='A',pmode='cur';
+let ci=0,mode='direct',bgT='A',bgI=0,font='pretendard',tpl='A',pmode='cur',nmOrd='fl';
 let cW=298,cH=420,cWm=105,cHm=148;
 
 async function init(){
@@ -514,7 +518,8 @@ function render(){
 }
 
 function mW(txt,fam,wt,fs,ls){const m=document.getElementById('M');m.style.cssText='font-family:'+fam+';font-weight:'+wt+';font-size:'+fs+'px;letter-spacing:'+ls+';';m.textContent=txt;return m.offsetWidth;}
-function calcFs(fn,ln,s,maxW,base){let fs=base;while(fs>12){if(mW(fn,s.fam,s.wt,fs,s.ls)<=maxW&&mW(ln,s.fam,s.wt,fs,s.ls)<=maxW)break;fs--;}return fs;}
+function calcFs(fn,ln,s,maxW,base){let fs=base;const isLF=nmOrd==='lf';const cmb=isLF?(ln+' '+fn).trim():null;while(fs>12){if(isLF){if(mW(cmb,s.fam,s.wt,fs,s.ls)<=maxW)break;}else{if(mW(fn,s.fam,s.wt,fs,s.ls)<=maxW&&mW(ln,s.fam,s.wt,fs,s.ls)<=maxW)break;}fs--;}return fs;}
+function toggleNameOrder(){nmOrd=nmOrd==='fl'?'lf':'fl';document.getElementById('name-order-btn').classList.toggle('active',nmOrd==='lf');render();toast(nmOrd==='lf'?'성+이름 순서로 변경':'이름+성 순서로 변경');}
 function calcEvFs(txt){const m=document.getElementById('ME');m.style.fontFamily="'Pretendard',sans-serif";m.style.fontWeight='600';m.style.lineHeight='0.95';let fs=13;while(fs>8){m.style.fontSize=fs+'px';m.textContent=txt;if(m.offsetHeight<=fs*0.95*2+2)break;fs-=0.5;}return fs;}
 
 function updNav(){const n=rows.length;document.getElementById('nav-pill').textContent=n?(ci+1)+' / '+n:'- / -';document.getElementById('prev-btn').disabled=ci<=0;document.getElementById('next-btn').disabled=ci>=n-1||n===0;}
@@ -555,52 +560,59 @@ function buildCardHTML(evText, firstText, lastText, affilText, W, H, t, fontKey)
 
     let html = '';
 
+    const isLF = nmOrd === 'lf';
+    const nmA = isLF
+      ? `<div style="${stFn} color:#fff;">${lastText} ${firstText}</div>`
+      : `<div style="${stFn} color:#fff;">${firstText}</div><div style="${stLn} color:#fff; margin-top:${Y_POS.A_lastNameGap}px;">${lastText}</div>`;
+    const nmB = isLF
+      ? `<div style="${stFn} color:#000;">${lastText} ${firstText}</div>`
+      : `<div style="${stFn} color:#000;">${firstText}</div><div style="${stLn} color:#000;">${lastText}</div>`;
+    const nmCDEF = isLF
+      ? `<div style="${stFn} color:#000;">${lastText} ${firstText}</div>`
+      : `<div style="${stFn} color:#000;">${firstText}</div><div style="${stFn} color:#000;">${lastText}</div>`;
+
     if (t === 'A') {
         html += `<div style="position:absolute;left:50%;top:${Y_POS.A_evTop}px;transform:translateX(-50%);text-align:center;color:rgba(255,255,255,.9);${stEv}">${evText}</div>`;
         html += `<div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);text-align:center;width:${Math.round(W*0.82)}px;display:flex;flex-direction:column;align-items:center;gap:0px;z-index:2;">`;
-        html += `<div style="${stFn} color:#fff;">${firstText}</div>`;
-        html += `<div style="${stLn} color:#fff; margin-top:${Y_POS.A_lastNameGap}px;">${lastText}</div>`;
+        html += nmA;
         html += `<div style="${stAf} margin-top:${Y_POS.A_affilGap}px; color:rgba(255,255,255,.82);">${affilText}</div>`;
         html += `</div>`;
         html += `<img src="${LOGO_URI}" style="position:absolute;bottom:${Y_POS.A_logoBottom}px;left:50%;transform:translateX(-50%);${stLogo}">`;
-    } 
+    }
     else if (t === 'B') {
         html += `<div style="position:absolute;left:${Y_POS.B_leftMargin}px;top:${Y_POS.B_evTop}px;color:rgba(0,0,0,.85);${stEv}">${evText}</div>`;
         html += `<img src="${LOGO_URI_BLK}" style="position:absolute;right:${Y_POS.rightMargin}px;top:${Y_POS.B_evTop - 1}px;${stLogo}">`;
-        
+
         html += `<div style="position:absolute;left:${Y_POS.B_leftMargin}px;bottom:${Y_POS.groupBottom}px;display:flex;flex-direction:column;align-items:flex-start;text-align:left;z-index:2;">`;
-        html += `<div style="${stFn} color:#000;">${firstText}</div>`;
-        html += `<div style="${stLn} color:#000;">${lastText}</div>`;
+        html += nmB;
         html += `<div style="${stAf} margin-left:2px; color:rgba(0,0,0,.7);">${affilText}</div>`;
         html += `</div>`;
-    } 
+    }
     else if (t === 'C' || t === 'D') {
         html += `<div style="position:absolute;bottom:0;left:0;width:100%;height:${Y_POS.whiteBoxH}px;background:#fff;z-index:1;"></div>`;
         html += `<img src="${LOGO_URI}" style="position:absolute;right:${Y_POS.rightMargin}px;top:30px;${stLogo}z-index:2;">`;
         html += `<div style="position:absolute;left:${Y_POS.leftMargin}px;bottom:${Y_POS.CD_evBottom}px;color:rgba(255,255,255,.92);${stEv}">${evText}</div>`;
-        
+
         // 이름/성: 흰색박스 상단 고정
         const cdWTop = H - Y_POS.whiteBoxH;
         html += `<div style="position:absolute;left:${Y_POS.leftMargin}px;top:${cdWTop + Y_POS.CD_namePadTop}px;display:flex;flex-direction:column;gap:${Y_POS.CD_nameGap}px;z-index:2;">`;
-        html += `<div style="${stFn} color:#000;">${firstText}</div>`;
-        html += `<div style="${stFn} color:#000;">${lastText}</div>`;
+        html += nmCDEF;
         html += `</div>`;
         // 소속: 흰색박스 하단
         html += `<div style="position:absolute;left:${Y_POS.leftMargin}px;bottom:${Y_POS.groupBottom}px;${stAf} color:rgba(0,0,0,.65);z-index:2;">${affilText}</div>`;
-    } 
+    }
     else if (t === 'E') {
         html += `<div style="position:absolute;bottom:0;left:0;width:100%;height:${Y_POS.whiteBoxH}px;background:#fff;z-index:1;"></div>`;
-        
+
         html += `<div style="position:absolute;left:${Y_POS.leftMargin}px;right:${Y_POS.rightMargin}px;bottom:${Y_POS.E_evBottom}px;display:flex;justify-content:space-between;align-items:flex-end;">`;
         html += `<div style="color:rgba(255,255,255,.92);${stEv}">${evText}</div>`;
         html += `<img src="${LOGO_URI}" style="${stLogo}">`;
         html += `</div>`;
-        
+
         // 이름/성: 흰색박스 상단 고정
         const eWTop = H - Y_POS.whiteBoxH;
         html += `<div style="position:absolute;left:${Y_POS.leftMargin}px;top:${eWTop + Y_POS.CD_namePadTop}px;display:flex;flex-direction:column;gap:${Y_POS.CD_nameGap}px;z-index:2;">`;
-        html += `<div style="${stFn} color:#000;">${firstText}</div>`;
-        html += `<div style="${stFn} color:#000;">${lastText}</div>`;
+        html += nmCDEF;
         html += `</div>`;
         // 소속: 흰색박스 하단
         html += `<div style="position:absolute;left:${Y_POS.leftMargin}px;bottom:${Y_POS.groupBottom}px;${stAf} color:rgba(0,0,0,.65);z-index:2;">${affilText}</div>`;
@@ -621,8 +633,7 @@ function buildCardHTML(evText, firstText, lastText, affilText, W, H, t, fontKey)
         html += `<div style="width:100%;height:100%;background:#fff;border-radius:5px;border:2px solid #f7f7f7;display:flex;flex-direction:column;justify-content:space-between;padding:${Y_POS.F_cardPadTop}px ${Y_POS.F_cardPadL}px ${Y_POS.F_cardPadBot}px;overflow:hidden;box-sizing:border-box;">`;
         // 이름/성
         html += `<div style="display:flex;flex-direction:column;gap:${Y_POS.F_nameGap}px;">`;
-        html += `<div style="${stFn} color:#000;">${firstText}</div>`;
-        html += `<div style="${stFn} color:#000;">${lastText}</div>`;
+        html += nmCDEF;
         html += `</div>`;
         // 소속 (우측 정렬)
         html += `<div style="${stAf} text-align:right;color:rgba(0,0,0,0.65);">${affilText}</div>`;
