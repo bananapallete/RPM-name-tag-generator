@@ -62,8 +62,8 @@ body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--t1);mi
 .lc{padding:8px;font-size:11px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .ln{text-align:center;font-weight:700;color:var(--t3);}
 .list-empty{padding:20px;text-align:center;font-size:12px;color:var(--t3);}
-.ev-row{display:flex;gap:8px;}
-.ev-inp{flex:1;height:38px;padding:0 10px;border:1.5px solid var(--bd);border-radius:var(--r8);font-size:13px;font-family:'Pretendard',sans-serif;color:var(--t1);outline:none;transition:border-color .15s;}
+.ev-row{display:flex;gap:8px;align-items:flex-start;}
+.ev-inp{flex:1;min-height:38px;padding:8px 10px;border:1.5px solid var(--bd);border-radius:var(--r8);font-size:13px;font-family:'Pretendard',sans-serif;color:var(--t1);outline:none;transition:border-color .15s;resize:vertical;line-height:1.4;}
 .ev-inp:focus{border-color:var(--pr);}.ev-inp::placeholder{color:var(--t4);}
 .btn-ap{padding:0 14px;height:38px;border:1.5px solid var(--bd);border-radius:var(--r8);background:var(--sf);color:var(--pr);font-size:13px;font-weight:700;font-family:'Pretendard',sans-serif;cursor:pointer;transition:all .15s;white-space:nowrap;}
 .btn-ap:hover{border-color:var(--pr);background:var(--prw);}
@@ -133,10 +133,19 @@ body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--t1);mi
 .mo-cancel{flex:1;padding:11px;background:var(--sf);border:1.5px solid var(--bd);border-radius:999px;font-size:13px;font-weight:600;font-family:'Pretendard',sans-serif;color:var(--t2);cursor:pointer;}
 .mo-confirm{flex:2;padding:11px;background:var(--pr);border:none;border-radius:999px;font-size:13px;font-weight:700;font-family:'Pretendard',sans-serif;color:#fff;cursor:pointer;}
 .mo-confirm:hover{background:var(--prh);}
+.up-ver{display:inline-block;font-size:11px;font-weight:700;color:var(--pr);background:var(--prw);padding:4px 10px;border-radius:999px;margin-bottom:12px;}
+.up-list{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:10px;}
+.up-list li{position:relative;padding-left:14px;font-size:13px;line-height:1.5;color:var(--t2);}
+.up-list li::before{content:'';position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:var(--pr);}
+.up-btns{display:flex;justify-content:space-between;align-items:center;gap:12px;}
+.up-check{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--t3);cursor:pointer;user-select:none;}
+.up-check input{width:14px;height:14px;accent-color:var(--pr);cursor:pointer;margin:0;}
+.mo-close{padding:9px 22px;background:var(--pr);border:none;border-radius:var(--r8);font-size:13px;font-weight:700;font-family:'Pretendard',sans-serif;color:#fff;cursor:pointer;transition:background .15s;}
+.mo-close:hover{background:var(--prh);}
 #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(10px);background:#191F28;color:#fff;padding:9px 18px;border-radius:999px;font-size:13px;font-weight:600;font-family:'Pretendard',sans-serif;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 #M{position:fixed;left:-9999px;top:0;white-space:nowrap;visibility:hidden;pointer-events:none;}
-#ME{position:fixed;left:-9999px;top:0;max-width:130px;word-break:keep-all;white-space:normal;text-transform:uppercase;letter-spacing:-.01em;visibility:hidden;pointer-events:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+#ME{position:fixed;left:-9999px;top:0;max-width:250px;word-break:keep-all;white-space:pre-wrap;text-transform:uppercase;letter-spacing:-.01em;visibility:hidden;pointer-events:none;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .font-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -147,6 +156,7 @@ body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--t1);mi
 </head>
 <body>
 <span id="M"></span><div id="ME"></div>
+<div class="mo" id="update-modal"><div class="mo-box"><div class="up-ver">v1.01 업데이트 내역</div><ul class="up-list"><li>행사명의 줄바꿈을 사용자가 직접 지정할 수 있도록 변경</li><li>줄바꿈 최대 영역 130에서 250으로 확장</li></ul><div class="up-btns"><label class="up-check"><input type="checkbox" id="up-dismiss">오늘 다시 보지 않기</label><button class="mo-close" onclick="closeUpdateModal()">확인</button></div></div></div>
 <div class="mo" id="pdf-modal"><div class="mo-box"><div class="mo-title">PDF 생성</div><div class="mo-desc">생성할 명찰을 선택하세요</div><div class="mo-opts"><div class="mo-opt sel" id="opt-cur" onclick="selOpt('cur')"><div class="mo-ic"><svg width="26" height="26" viewBox="0 0 92 92" fill="none"><path d="M63 14C66.3 14 69 16.7 69 20V72C69 75.3 66.3 78 63 78H28C24.7 78 22 75.3 22 72V20C22 16.7 24.7 14 28 14H63ZM40 19C38.9 19 38 19.9 38 21C38 22.1 38.9 23 40 23H51C52.1 23 53 22.1 53 21C53 19.9 52.1 19 51 19H40Z" fill="white"/></svg></div><div><div class="mo-lbl">현재 명찰</div><div class="mo-sub" id="opt-cur-sub">선택된 1명</div></div></div><div class="mo-opt" id="opt-all" onclick="selOpt('all')"><div class="mo-ic"><svg width="26" height="26" viewBox="0 0 92 92" fill="none"><path d="M52.2 26.4C55.3 26.4 57.8 28.9 57.8 32V80.4C57.8 83.5 55.3 86 52.2 86H19.6C16.5 86 14 83.5 14 80.4V32C14 28.9 16.5 26.4 19.6 26.4H52.2Z" fill="white"/><path d="M62.5 18C65.5 18 68 20.5 68 23.6V72C68 75.1 65.5 77.6 62.5 77.6H29.8V73.6H62.5C63.3 73.6 64 72.9 64 72V23.6C64 22.7 63.3 22 62.5 22H42V18H62.5Z" fill="white" opacity=".5"/></svg></div><div><div class="mo-lbl">전체 명찰</div><div class="mo-sub" id="opt-all-sub">전체 명 일괄 생성</div></div></div></div><div class="mo-btns"><button class="mo-cancel" onclick="closeModal()">취소</button><button class="mo-confirm" onclick="confirmExport()">생성하기</button></div></div></div>
 <div id="toast"></div>
 <div class="app">
@@ -157,7 +167,7 @@ body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--t1);mi
 </svg></div><div class="mode-label">직접 입력</div></div><div class="mode-card" id="mode-sheet" onclick="switchMode('sheet')"><div class="mode-icon"><svg width="14" height="14" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M9.9167 7.75V8.83333H7.2083V14.7917H13.1667V12.0833H14.25V15.3333C14.25 15.477 14.1929 15.6148 14.0914 15.7164C13.9898 15.8179 13.852 15.875 13.7083 15.875H6.6667C6.523 15.875 6.3852 15.8179 6.2837 15.7164C6.1821 15.6148 6.125 15.477 6.125 15.3333V8.29167C6.125 8.14801 6.1821 8.01023 6.2837 7.90865C6.3852 7.80707 6.523 7.75 6.6667 7.75H9.9167ZM15.875 6.125V10.4583H14.7917V7.97371L10.5705 12.1955L9.8045 11.4295L14.0252 7.20833H11.5417V6.125H15.875Z" fill="currentColor"/>
 </svg></div><div class="mode-label">구글 시트 (개발중)</div></div></div><div id="panel-direct"><div class="dt-wrap"><table class="dt"><thead><tr><th class="cn">#</th><th>이름</th><th>성</th><th>소속</th><th class="cx"></th></tr></thead><tbody id="dt-body"></tbody></table></div><div class="row-btns"><button class="add-row" onclick="addRow()">+ 행 추가</button><button class="reset-row" onclick="resetRows()">초기화</button></div></div><div id="panel-sheet" style="display:none"><div class="sh-row"><input class="sh-inp" id="sheet-url" type="text" placeholder="구글 시트 URL 붙여넣기"><button class="btn-ic" onclick="loadSheet()">&#8635;</button></div><div id="sheet-status" class="sh-st"></div><div class="list-wrap"><div class="list-hdr"><div>#</div><div>이름</div><div>성</div><div>소속</div></div><div class="list-body" id="list-body"><div class="list-empty">시트 URL을 입력하고 ↻ 버튼을 눌러주세요</div></div></div></div></div>
-  <div class="sec"><div class="sec-lbl">행사명</div><div class="ev-row"><input class="ev-inp" id="ev-inp" type="text" placeholder="행사명을 입력하세요" value="MIDAS SQUARE 1991"><button class="btn-ap" onclick="applyEv()">적용</button></div></div>
+  <div class="sec"><div class="sec-lbl">행사명</div><div class="ev-row"><textarea class="ev-inp" id="ev-inp" rows="2" placeholder="행사명을 입력하세요 (Enter로 줄바꿈)">MIDAS SQUARE 1991</textarea><button class="btn-ap" onclick="applyEv()">적용</button></div></div>
   <div class="sec"><div class="sec-lbl">배경 선택</div><div class="bg-tabs"><button class="bg-tab active" id="bgt-A" onclick="switchBgType('A')">A</button><button class="bg-tab" id="bgt-B" onclick="switchBgType('B')">B</button><button class="bg-tab" id="bgt-C" onclick="switchBgType('C')">C</button><button class="bg-tab" id="bgt-D" onclick="switchBgType('D')">D</button><button class="bg-tab" id="bgt-E" onclick="switchBgType('E')">E</button><button class="bg-tab" id="bgt-F" onclick="switchBgType('F')">F</button></div><div class="bg-grid" id="bg-grid"></div></div>
   <div class="sec"><div class="sec-lbl">폰트</div><div class="font-toggle"><button class="font-btn active" id="font-pr" onclick="switchFont('pretendard')">Pretendard</button><button class="font-btn bb" id="font-bb" onclick="switchFont('bebas')" disabled>Bebas Neue</button></div></div>
   <div class="sec"><div class="sec-lbl">표기 방식</div><button class="name-order-btn" id="name-order-btn" onclick="toggleNameOrder()">이름 순서 변경</button></div>
@@ -214,7 +224,7 @@ body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--t1);mi
     E_evBottom: 181,   // [E타입] 행사명/로고 상단 그룹의 바닥 여백 (px)
     
     logoHeight: 13,    // 로고 세로 크기 고정 (px)
-    evMaxWidth: 130,   // 행사명 가로 최대 길이 제한 (px)
+    evMaxWidth: 250,   // 행사명 가로 최대 길이 제한 (px)
 
     // --- F 타입 ---
     F_whiteCardH: 247, // [F타입] 흰색 카드 세로 높이 고정 (px)
@@ -367,6 +377,20 @@ async function init(){
   renderDir(); syncRows(); initGrid(); selBg(0,true); setTpl('A');
   document.getElementById('ev-inp').value='MIDAS SQUARE 1991';
   applyEv(true); render(); updNav();
+  showUpdateModal();
+}
+
+// ── 업데이트 안내 모달 ──
+function showUpdateModal(){
+  const today=new Date().toISOString().slice(0,10);
+  if(localStorage.getItem('badge-update-hide')===today) return;
+  document.getElementById('update-modal').classList.add('show');
+}
+function closeUpdateModal(){
+  if(document.getElementById('up-dismiss').checked){
+    localStorage.setItem('badge-update-hide',new Date().toISOString().slice(0,10));
+  }
+  document.getElementById('update-modal').classList.remove('show');
 }
 
 function switchMode(m){
@@ -530,6 +554,7 @@ function closeModal(){document.getElementById('pdf-modal').classList.remove('sho
 function selOpt(m){pmode=m;document.getElementById('opt-cur').classList.toggle('sel',m==='cur');document.getElementById('opt-all').classList.toggle('sel',m==='all');}
 async function confirmExport(){closeModal();const btn=document.getElementById('export-btn');btn.disabled=true;btn.textContent='생성 중...';await exportPDF(pmode==='all');btn.disabled=false;btn.textContent='PDF 생성하기';}
 document.getElementById('pdf-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+document.getElementById('update-modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeUpdateModal();});
 
 async function exportPDF(all=false){
   const {jsPDF}=window.jspdf;
@@ -555,7 +580,7 @@ function buildCardHTML(evText, firstText, lastText, affilText, W, H, t, fontKey)
     const stFn = `font-family:${s.fam};font-size:${fs}px;font-weight:${s.wt};line-height:1.05;letter-spacing:${s.ls};white-space:nowrap;overflow:visible;padding-bottom:.05em;`;
     const stLn = `${stFn} margin-top:${Y_POS.lastNameGap}px;`;
     const stAf = `font-size:13px;font-weight:500;letter-spacing:0em;font-family:'Pretendard',sans-serif;margin-top:${Y_POS.affilGap}px;`;
-    const stEv = `width:${Y_POS.evMaxWidth}px;font-size:${evFs}px;font-weight:600;letter-spacing:-0.01em;text-transform:uppercase;line-height:1.2;font-family:'Pretendard',sans-serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:keep-all;`;
+    const stEv = `width:${Y_POS.evMaxWidth}px;font-size:${evFs}px;font-weight:600;letter-spacing:-0.01em;text-transform:uppercase;line-height:1.2;font-family:'Pretendard',sans-serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:keep-all;white-space:pre-wrap;`;
     const stLogo = `height:${Y_POS.logoHeight}px;width:auto;flex-shrink:0;`;
 
     let html = '';
