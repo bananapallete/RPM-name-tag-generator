@@ -240,7 +240,7 @@ body{font-family:'Pretendard',sans-serif;background:var(--bg);color:var(--t1);mi
 </head>
 <body>
 <span id="M"></span><div id="ME"></div>
-<div class="mo" id="update-modal"><div class="mo-box"><div class="up-ver">v1.01 업데이트 내역</div><ul class="up-list"><li>행사명의 줄바꿈을 사용자가 직접 지정할 수 있도록 변경</li><li>줄바꿈 최대 영역 130에서 250으로 확장</li></ul><div class="up-btns"><label class="up-check"><input type="checkbox" id="up-dismiss">오늘 다시 보지 않기</label><button class="mo-close" onclick="closeUpdateModal()">확인</button></div></div></div>
+<div class="mo" id="update-modal"><div class="mo-box"><div class="up-ver">v1.02 업데이트 내역</div><ul class="up-list"><li>배경 직접 업로드 기능 추가</li><li>국문 표기 방식 추가</li><li>A4 한 면에 2장씩 출력 옵션 추가</li></ul><div class="up-btns"><label class="up-check"><input type="checkbox" id="up-dismiss">오늘 다시 보지 않기</label><button class="mo-close" onclick="closeUpdateModal()">확인</button></div></div></div>
 <div class="mo" id="pdf-modal"><div class="mo-box"><div class="mo-title">PDF 생성</div><div class="mo-desc">생성할 명찰을 선택하세요</div><div class="mo-opts"><div class="mo-opt sel" id="opt-cur" onclick="selOpt('cur')"><div class="mo-ic"><svg width="26" height="26" viewBox="0 0 92 92" fill="none"><path d="M63 14C66.3 14 69 16.7 69 20V72C69 75.3 66.3 78 63 78H28C24.7 78 22 75.3 22 72V20C22 16.7 24.7 14 28 14H63ZM40 19C38.9 19 38 19.9 38 21C38 22.1 38.9 23 40 23H51C52.1 23 53 22.1 53 21C53 19.9 52.1 19 51 19H40Z" fill="white"/></svg></div><div><div class="mo-lbl">현재 명찰</div><div class="mo-sub" id="opt-cur-sub">선택된 1명</div></div></div><div class="mo-opt" id="opt-all" onclick="selOpt('all')"><div class="mo-ic"><svg width="26" height="26" viewBox="0 0 92 92" fill="none"><path d="M52.2 26.4C55.3 26.4 57.8 28.9 57.8 32V80.4C57.8 83.5 55.3 86 52.2 86H19.6C16.5 86 14 83.5 14 80.4V32C14 28.9 16.5 26.4 19.6 26.4H52.2Z" fill="white"/><path d="M62.5 18C65.5 18 68 20.5 68 23.6V72C68 75.1 65.5 77.6 62.5 77.6H29.8V73.6H62.5C63.3 73.6 64 72.9 64 72V23.6C64 22.7 63.3 22 62.5 22H42V18H62.5Z" fill="white" opacity=".5"/></svg></div><div><div class="mo-lbl">전체 명찰</div><div class="mo-sub" id="opt-all-sub">전체 명 일괄 생성</div></div></div></div><div class="mo-sub-wrap" id="all-sub-opts"><div class="mo-sub-inner"><div class="mo-sub-pad"><div class="mo-sub-lbl">출력 레이아웃</div><div class="mo-sub-grid"><button class="mo-sub-opt sel" id="layout-single" onclick="selLayout('single')">하나씩 출력</button><button class="mo-sub-opt" id="layout-duo" onclick="selLayout('duo')">두 개씩 출력</button></div></div></div></div><div class="mo-btns"><button class="mo-cancel" onclick="closeModal()">취소</button><button class="mo-confirm" onclick="confirmExport()">생성하기</button></div></div></div>
 <div id="toast"></div>
 <div class="app">
@@ -512,12 +512,12 @@ async function init(){
 // ── 업데이트 안내 모달 ──
 function showUpdateModal(){
   const today=new Date().toISOString().slice(0,10);
-  if(localStorage.getItem('badge-update-hide')===today) return;
+  if(localStorage.getItem('badge-update-hide-v1.02')===today) return;
   document.getElementById('update-modal').classList.add('show');
 }
 function closeUpdateModal(){
   if(document.getElementById('up-dismiss').checked){
-    localStorage.setItem('badge-update-hide',new Date().toISOString().slice(0,10));
+    localStorage.setItem('badge-update-hide-v1.02',new Date().toISOString().slice(0,10));
   }
   document.getElementById('update-modal').classList.remove('show');
 }
