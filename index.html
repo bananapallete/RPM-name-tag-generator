@@ -1187,7 +1187,7 @@ init();
 
 // ── 방문 집계 (Google Sheet로 전송) ──
 (function trackVisit(){
-  const TRACK_URL='https://script.google.com/macros/s/AKfycbwyJb7Ego8eBPoBIJJ066ODeUFNNCE2qPmmPHzqqXm0w3JNox1ogOObQXcuwdRtRb6C/exec';
+  const TRACK_URL='https://script.google.com/macros/s/AKfycbxfSE-Om69cN46eQNppT-uEqYvChKnjqY2zUAt8pz207Kc5UMzJD8iNzA_jIXNprs9U/exec';
   try{
     const SESSION_KEY='badge-session-tracked';
     if(sessionStorage.getItem(SESSION_KEY))return; // 세션당 1회만 전송
