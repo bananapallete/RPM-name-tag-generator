@@ -1184,5 +1184,32 @@ async function renderCanvasImage(r) {
 let tt=null;
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),1200);}
 init();
+
+// ── 방문 집계 (Google Sheet로 전송) ──
+(function trackVisit(){
+  const TRACK_URL='https://script.google.com/macros/s/AKfycbwyJb7Ego8eBPoBIJJ066ODeUFNNCE2qPmmPHzqqXm0w3JNox1ogOObQXcuwdRtRb6C/exec';
+  try{
+    const SESSION_KEY='badge-session-tracked';
+    if(sessionStorage.getItem(SESSION_KEY))return; // 세션당 1회만 전송
+    sessionStorage.setItem(SESSION_KEY,'1');
+    const VID_KEY='badge-visitor-id';
+    let visitorId=localStorage.getItem(VID_KEY);
+    const isNewVisitor=!visitorId;
+    if(isNewVisitor){
+      visitorId=Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+      localStorage.setItem(VID_KEY,visitorId);
+    }
+    const params=new URLSearchParams({
+      visitorId,
+      isNewVisitor:String(isNewVisitor),
+      userAgent:(navigator.userAgent||'').slice(0,220),
+      referrer:(document.referrer||'direct').slice(0,220),
+      language:navigator.language||'',
+      screen:(screen&&screen.width?screen.width+'x'+screen.height:'')
+    });
+    // no-cors GET (Apps Script는 doGet에서 파라미터 파싱)
+    fetch(TRACK_URL+'?'+params.toString(),{mode:'no-cors',cache:'no-store'}).catch(()=>{});
+  }catch(e){}
+})();
 </script>
 </body></html>
